@@ -1,7 +1,6 @@
 # Team model handoff
 
 Author: Lindsey Yang · Modified: 2026-11-03
-AI assistance: Codex helped implement and document this prototype.
 
 No Amazon-trained models are included yet. Demo mode fits two small classifiers on the 18 invented examples in `sentiment.py`. Those predictions are interface checks, not project evaluation results.
 
