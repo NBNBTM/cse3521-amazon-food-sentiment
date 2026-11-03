@@ -95,4 +95,3 @@ with st.expander("About this prototype"):
         "The demo has no held-out evaluation. Real-data training, model comparison, "
         "the required deep model, and cloud deployment remain future team work."
     )
-    st.caption("AI assistance: Codex helped implement this prototype. See README for scope and disclosure.")

@@ -78,9 +78,3 @@ Remaining team work: obtain/clean the assigned data, train/evaluate official mod
 For Streamlit Community Cloud, use repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12. Review repository access and app viewer permissions separately before deploying. This repository setting does not establish a deployed app's viewer privacy. No Cloud account connection or live deployment is included in this initial setup.
 
 References: [Streamlit deployment](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app), [Streamlit AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest), [scikit-learn model persistence](https://scikit-learn.org/stable/model_persistence.html). Course materials above are read-only local references and are not republished in the repository.
-
-## Collaboration and AI assistance
-
-Lindsey owns repository access/settings; Abdullah remains the team's Project Lead. Use short task branches and pull requests for review. Each teammate should commit their own actual contributions; do not manufacture commit history or attribute AI output to another member. Accepted collaborators can push changes; no collaborator invitations have been sent.
-
-Codex assisted with initial app implementation, configuration, developer documentation, and tests on 2026-11-03. The project specification (p. 9) allows implementation assistance and requires a one-sentence disclosure in the final report. Team analysis, interpretation, and report writing remain the students' responsibility. Review and understand this implementation before using it in the course deliverable.
