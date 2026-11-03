@@ -8,7 +8,7 @@ A team project that classifies food review text as **negative** (1–2 stars), *
 
 The initial app is runnable locally. **Demo** mode trains Bag-of-Words + Multinomial Naive Bayes and TF-IDF + Logistic Regression on 18 invented food reviews. These are interface demonstrations, not Amazon-trained project models, held-out evaluation, or evidence of predictive quality. **Team models** mode accepts complete, trusted fitted pipelines; no official artifacts are included yet.
 
-The repository is **private at Lindsey's request**, owned and administered by **NBNBTM**. No teammates have been invited yet. The project specification requires a **public** repository (pp. 1, 4, 8); the private setting is not confirmed as an accepted course exception. Do not describe this requirement as satisfied or change visibility without Lindsey's authorization.
+The repository is **public**, as required by the project specification (pp. 1, 4, 8), and is owned and administered by **NBNBTM**. Anyone can view the code; direct write access remains limited to the owner and accepted collaborators. No teammates have been invited yet.
 
 ## Team
 
@@ -71,7 +71,7 @@ python -m unittest discover -s tests -v
 - `group_project.pdf`, pp. 6–7: final report/slides due Nov 29 at 11:59 pm; live demo date is **See Carmen**, not verified here.
 - `group_project.pdf`, p. 8: repository organization, reproducibility, and continuing genuine contribution history.
 
-Remaining team work: obtain/clean the assigned data, train/evaluate official models on the shared split, deliver compatible artifacts, add the deep model, complete the required report/screenshots, deploy and verify the live Streamlit URL, and resolve the private/public requirement. No Carmen submission or cloud deployment has been performed.
+Remaining team work: obtain/clean the assigned data, train/evaluate official models on the shared split, deliver compatible artifacts, add the deep model, complete the required report/screenshots, and deploy and verify the live Streamlit URL. No Carmen submission or cloud deployment has been performed.
 
 ## Deployment preparation
 
@@ -81,6 +81,6 @@ References: [Streamlit deployment](https://docs.streamlit.io/deploy/streamlit-co
 
 ## Collaboration and AI assistance
 
-Lindsey owns repository access/settings; Abdullah remains the team's Project Lead. Use short task branches and pull requests for review. Each teammate should commit their own actual contributions; do not manufacture commit history or attribute AI output to another member. Accepted collaborators can edit this private repository; no collaborator invitations have been sent.
+Lindsey owns repository access/settings; Abdullah remains the team's Project Lead. Use short task branches and pull requests for review. Each teammate should commit their own actual contributions; do not manufacture commit history or attribute AI output to another member. Accepted collaborators can push changes; no collaborator invitations have been sent.
 
 Codex assisted with initial app implementation, configuration, developer documentation, and tests on 2026-11-03. The project specification (p. 9) allows implementation assistance and requires a one-sentence disclosure in the final report. Team analysis, interpretation, and report writing remain the students' responsibility. Review and understand this implementation before using it in the course deliverable.
