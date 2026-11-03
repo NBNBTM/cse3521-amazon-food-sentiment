@@ -93,5 +93,5 @@ with st.expander("About this prototype"):
     st.write(
         "Naive Bayes uses Bag-of-Words counts; Logistic Regression uses TF-IDF. "
         "The demo has no held-out evaluation. Real-data training, model comparison, "
-        "the required deep model, and cloud deployment remain future team work."
+        "and the required deep model remain future team work."
     )
