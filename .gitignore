@@ -1,0 +1,25 @@
+# Author: Lindsey Yang
+# Modified: 2026-11-03
+.venv/
+.local/
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+.streamlit/secrets.toml
+tests/tmp/
+output/
+.playwright-cli/
+
+# Course references and private document snapshots stay local.
+*.pdf
+*.docx
+*.html
+
+# Obtain the course sample separately; never commit raw review data.
+data/*
+!data/README.md
+*.csv
+*.tsv
+*.sqlite*
