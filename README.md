@@ -6,7 +6,9 @@ A team project that classifies food review text as **negative** (1–2 stars), *
 
 ## Current status
 
-The initial app is runnable locally. **Demo** mode trains Bag-of-Words + Multinomial Naive Bayes and TF-IDF + Logistic Regression on 18 invented food reviews. These are interface demonstrations, not Amazon-trained project models, held-out evaluation, or evidence of predictive quality. **Team models** mode accepts complete, trusted fitted pipelines; no official artifacts are included yet.
+The initial app is deployed on **Streamlit Community Cloud**: [Open the live prototype](https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/).
+
+**Demo** mode trains Bag-of-Words + Multinomial Naive Bayes and TF-IDF + Logistic Regression on 18 invented food reviews. These are interface demonstrations, not Amazon-trained project models, held-out evaluation, or evidence of predictive quality. **Team models** mode accepts complete, trusted fitted pipelines; no official artifacts are included yet.
 
 The repository is **public**, as required by the project specification (pp. 1, 4, 8), and is owned and administered by **NBNBTM**. Anyone can view the code; direct write access remains limited to the owner and accepted collaborators. No teammates have been invited yet.
 
@@ -71,10 +73,12 @@ python -m unittest discover -s tests -v
 - `group_project.pdf`, pp. 6–7: final report/slides due Nov 29 at 11:59 pm; live demo date is **See Carmen**, not verified here.
 - `group_project.pdf`, p. 8: repository organization, reproducibility, and continuing genuine contribution history.
 
-Remaining team work: obtain/clean the assigned data, train/evaluate official models on the shared split, deliver compatible artifacts, add the deep model, complete the required report/screenshots, and deploy and verify the live Streamlit URL. No Carmen submission or cloud deployment has been performed.
+Remaining team work: obtain/clean the assigned data, train/evaluate official models on the shared split, deliver compatible artifacts, add the deep model, and complete the required report/screenshots. No Carmen submission has been performed.
 
-## Deployment preparation
+## Deployment
 
-For Streamlit Community Cloud, use repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12. Review repository access and app viewer permissions separately before deploying. This repository setting does not establish a deployed app's viewer privacy. No Cloud account connection or live deployment is included in this initial setup.
+Live prototype: https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/
+
+Streamlit Community Cloud uses repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12. The prominent **DEMO ONLY** warning remains visible. The cloud app has been checked for blank-input handling and side-by-side predictions; real Amazon-trained models are not included yet.
 
 References: [Streamlit deployment](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app), [Streamlit AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest), [scikit-learn model persistence](https://scikit-learn.org/stable/model_persistence.html). Course materials above are read-only local references and are not republished in the repository.
