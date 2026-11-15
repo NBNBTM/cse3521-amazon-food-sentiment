@@ -1,8 +1,8 @@
 # Team model handoff
 
-Author: Lindsey Yang · Modified: 2026-11-03
+Author: Lindsey Yang · Modified: 2026-11-14
 
-No Amazon-trained models are included yet. Demo mode fits two small classifiers on the 18 invented examples in `sentiment.py`. Those predictions are interface checks, not project evaluation results.
+The [feature and baseline notebook](../notebooks/02_features_and_nb_baseline.ipynb) exports the Amazon-trained Naive Bayes pipeline. Demo mode fits two small classifiers on the 18 invented examples in `sentiment.py` for interface checks.
 
 For **Team models** mode, export trusted, fitted scikit-learn `Pipeline` objects to:
 
@@ -11,7 +11,7 @@ For **Team models** mode, export trusted, fitted scikit-learn `Pipeline` objects
 
 Each pipeline must accept a list of raw strings in `predict()` and contain all training-time text transformations. Its `classes_` must contain exactly the strings `negative`, `neutral`, and `positive`. Optional `predict_proba()` must return one three-class probability row per input, in `classes_` order. Numeric class IDs require an explicit label mapping before export; the app will not guess.
 
-Agree on input composition with the feature owner before training (the charter proposes `Summary + Text`). The app passes the entered string unchanged to the pipeline. Never use review `Score` as an input feature. Record dependency versions with the exported artifact and reproduce those versions for inference.
+Use `Summary + " " + Text` for each input, with an empty string when the summary is absent. The app uses the same composition. Exclude review `Score` from model inputs. Record dependency versions with the exported artifact and reproduce those versions for inference.
 
 ```python
 import joblib

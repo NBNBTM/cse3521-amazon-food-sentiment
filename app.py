@@ -1,5 +1,5 @@
 # Author: Lindsey Yang
-# Modified: 2026-11-10
+# Modified: 2026-11-14
 """Group Theta sentiment-analysis app prototype; run with streamlit run app.py."""
 
 from pathlib import Path
@@ -26,6 +26,7 @@ def team_model(name, artifact_path, modified_ns, size):
 def use_example():
     choice = st.session_state["example"]
     if choice in EXAMPLES:
+        st.session_state["summary"] = ""
         st.session_state["review"] = EXAMPLES[choice]
 
 
@@ -50,9 +51,11 @@ else:
 
 st.subheader("Try a review")
 st.selectbox("Try an example", ["Write my own", *EXAMPLES], key="example", on_change=use_example)
+summary = st.text_input("Summary (optional)", placeholder="Enter the review title…",
+                        max_chars=10000, key="summary")
 review = st.text_area("Review text", placeholder="Paste an English food review here…", height=150,
                       max_chars=10000, key="review")
-st.caption("Use the same raw input format as training. The saved pipeline handles preprocessing.")
+st.caption("Summary and review text are joined with one space, up to 10,000 characters in total.")
 
 if st.button("Analyze review", type="primary"):
     if not review.strip():
@@ -60,6 +63,7 @@ if st.button("Analyze review", type="primary"):
     elif not selected:
         st.warning("Select at least one model to compare.")
     else:
+        review_input = f"{summary} {review}"
         st.subheader("Model predictions")
         for column, name in zip(st.columns(len(selected)), selected):
             with column:
@@ -73,7 +77,7 @@ if st.button("Analyze review", type="primary"):
                             raise ValueError(f"Missing team artifact: models/{artifact.name}.")
                         metadata = artifact.stat()
                         model = team_model(name, str(artifact), metadata.st_mtime_ns, metadata.st_size)
-                    result = predict_review(model, review)
+                    result = predict_review(model, review_input)
                 except Exception as error:
                     st.error(str(error) if isinstance(error, ValueError)
                              else "Prediction failed. Ask the model author to verify the exported pipeline.")
@@ -91,6 +95,6 @@ if st.button("Analyze review", type="primary"):
 with st.expander("About this prototype"):
     st.write(
         "Naive Bayes uses Bag-of-Words counts; Logistic Regression uses TF-IDF. "
-        "The demo has no held-out evaluation. Real-data training, model comparison, "
-        "and the required deep model remain future team work."
+        "The demo has no held-out evaluation. The team Naive Bayes model was trained "
+        "on Amazon reviews. Full model comparison and the deep model are planned for M3."
     )

@@ -8,7 +8,7 @@ A team project that classifies food review text as **negative** (1–2 stars), *
 
 The initial app is deployed on **Streamlit Community Cloud**: [Open the live prototype](https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/).
 
-**Demo** mode trains Bag-of-Words + Multinomial Naive Bayes and TF-IDF + Logistic Regression on 18 invented food reviews. These are interface demonstrations, not Amazon-trained project models, held-out evaluation, or evidence of predictive quality. **Team models** mode accepts complete, trusted fitted pipelines; no official artifacts are included yet.
+**Demo** mode trains Bag-of-Words + Multinomial Naive Bayes and TF-IDF + Logistic Regression on 18 invented food reviews for interface demonstrations. Select **Team models** and **Naive Bayes** to use the fitted pipeline trained on Amazon reviews.
 
 The repository is **public**, as required by the project specification (pp. 1, 4, 8), and is owned and administered by **NBNBTM**. Anyone can view the code; direct write access remains limited to the owner and accepted collaborators. No teammates have been invited yet.
 
@@ -38,7 +38,7 @@ The current Mac already has `.venv` installed. Double-click `run_app.command`, o
 .venv/bin/python -m streamlit run app.py --server.address 127.0.0.1
 ```
 
-Open the local address printed by Streamlit. Choose an example or paste a review, select models, and click **Analyze review**. The app makes no external AI/API requests and has no review-upload or persistence feature. Probabilities are uncalibrated model outputs, not a guarantee that the prediction is correct.
+Open the local address printed by Streamlit. Choose an example or enter the review text and an optional summary, select models, and click **Analyze review**. The app makes no external API requests and has no review-upload or persistence feature. Model probabilities are uncalibrated.
 
 ## Model handoff
 
@@ -47,7 +47,7 @@ See [models/README.md](models/README.md). The feature/model owner should export 
 - `models/naive_bayes.joblib`
 - `models/logistic_regression.joblib`
 
-The app forwards the entered string unchanged. Agree on `Summary + Text` composition before training, consistent with the charter. Never use `Score` as a feature. Team mode reports missing/incompatible files rather than substituting demo predictions. Only trusted team artifacts may be loaded; joblib can execute Python code.
+The app sends `Summary + " " + Text` to the fitted pipeline. An omitted summary becomes an empty string. Use this format for training and exclude `Score` from the input. Team mode reports missing or incompatible files. Load team artifacts from trusted sources because joblib can execute Python code.
 
 The deep model will need a separate adapter after the team supplies it. This prototype does not complete the required deep/modern model, full model comparison, or M3 report.
 
@@ -55,7 +55,7 @@ The deep model will need a separate adapter after the team supplies it. This pro
 
 Group Theta uses the instructor-assigned **seed 49** to draw 50,000 reviews from the full Amazon Fine Food Reviews dataset. Generate `data/group_sample_seed49.csv` using the steps in [data/README.md](data/README.md), then share that file within the team for all project stages. The charter reports 46,391 reviews after removing duplicate texts and a sample positive-class proportion of 78.1%. Recalculate held-out evaluation metrics from the agreed split.
 
-The charter plans duplicate removal before a stratified 80/20 split, shared across models, with feature fitting on training data only. Cross-validation/tuning belongs within the training partition; reserve the test set for final evaluation. Training commands and real-data results will be added by the responsible teammates when implemented. Demo pipelines are fitted in memory by `get_demo_models()`; they require no download.
+The [data and EDA notebook](notebooks/01_data_and_eda.ipynb) and [feature and baseline notebook](notebooks/02_features_and_nb_baseline.ipynb) use `data/Reviews.csv` to reproduce the initial analysis and Naive Bayes model. The baseline notebook removes duplicates before the stratified 80/20 split and fits features on the training data only. Reserve the test set for final evaluation. Demo pipelines are fitted in memory by `get_demo_models()`.
 
 `requirements.txt` pins the direct runtime dependencies. `requirements-lock.txt` captures the complete tested Python environment. Use the lock file for an identical dependency set:
 
@@ -73,12 +73,12 @@ python -m unittest discover -s tests -v
 - `group_project.pdf`, pp. 6–7: final report/slides due Nov 29 at 11:59 pm; live demo date is **See Carmen**, not verified here.
 - `group_project.pdf`, p. 8: repository organization, reproducibility, and continuing genuine contribution history.
 
-Remaining team work: obtain/clean the assigned data, train/evaluate official models on the shared split, deliver compatible artifacts, add the deep model, and complete the required report/screenshots. No Carmen submission has been performed.
+Remaining team work: train and evaluate the other models on the shared split, export compatible artifacts, and complete the required report and screenshots.
 
 ## Deployment
 
 Live prototype: https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/
 
-Streamlit Community Cloud uses repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12. The prominent **DEMO ONLY** warning remains visible. The cloud app has been checked for blank-input handling and side-by-side predictions; real Amazon-trained models are not included yet.
+Streamlit Community Cloud uses repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12. Demo mode displays **DEMO ONLY**. Select **Team models** to exercise the exported model.
 
 References: [Streamlit deployment](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app), [Streamlit AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest), [scikit-learn model persistence](https://scikit-learn.org/stable/model_persistence.html). Course materials above are read-only local references and are not republished in the repository.

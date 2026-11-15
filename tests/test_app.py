@@ -96,8 +96,14 @@ class PrototypeTests(unittest.TestCase):
                 joblib.dump(self.models[name], models_dir / filename)
             app = self.app_with_team_directory(directory)
             app.radio[0].set_value("Team models").run()
-            app.text_area[0].input(EXAMPLES["Negative"])
-            app.button[0].click().run()
+            summary = "Disappointing purchase"
+            review = EXAMPLES["Negative"]
+            app.text_input(key="summary").input(summary)
+            app.text_area(key="review").input(review)
+            with patch("sentiment.predict_review", wraps=predict_review) as predict:
+                app.button[0].click().run()
+            self.assertEqual([call.args[1] for call in predict.call_args_list],
+                             [f"{summary} {review}"] * 2)
             self.assertFalse(app.exception)
             self.assertFalse(app.error)
             self.assertEqual([item.value for item in app.metric], ["Negative", "Negative"])
