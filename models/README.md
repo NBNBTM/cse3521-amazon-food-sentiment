@@ -1,13 +1,14 @@
 # Team model handoff
 
-Author: Lindsey Yang · Modified: 2026-11-14
+Author: Lindsey Yang · Modified: 2026-11-23
 
-The [feature and baseline notebook](../notebooks/02_features_and_nb_baseline.ipynb) exports the Amazon-trained Naive Bayes pipeline. Demo mode fits two small classifiers on the 18 invented examples in `sentiment.py` for interface checks.
+The [training scripts](../training/README.md) export the fitted pipelines. Demo mode fits two small classifiers on the 18 invented examples in `sentiment.py` for interface checks.
 
 For **Team models** mode, export trusted, fitted scikit-learn `Pipeline` objects to:
 
 - `models/naive_bayes.joblib`
 - `models/logistic_regression.joblib`
+- `models/feedforward_nn.joblib`
 
 Each pipeline must accept a list of raw strings in `predict()` and contain all training-time text transformations. Its `classes_` must contain exactly the strings `negative`, `neutral`, and `positive`. Optional `predict_proba()` must return one three-class probability row per input, in `classes_` order. Numeric class IDs require an explicit label mapping before export; the app will not guess.
 
@@ -20,6 +21,4 @@ import joblib
 joblib.dump(pipeline, "models/logistic_regression.joblib")
 ```
 
-Only load artifacts produced and reviewed by trusted team members: joblib/pickle files can execute code. The app deliberately has no model-upload interface. Missing or incompatible artifacts produce an error rather than silently using demo models. Replacing an artifact refreshes the cache when its modification timestamp or size changes; restart the app if you preserve both metadata values.
-
-The neural network needs a separate reviewed adapter when the team delivers it. It is not represented by a fake model slot here.
+Team mode displays models with a local fitted pipeline. The feedforward neural network uses the same scikit-learn Pipeline interface as Naive Bayes and Logistic Regression. Load artifacts from trusted sources because joblib files can execute Python code. Replacing an artifact refreshes the cache when its modification timestamp or size changes. Restart the app if both values stay the same.

@@ -1,5 +1,5 @@
 # Author: Lindsey Yang
-# Modified: 2026-11-10
+# Modified: 2026-11-23
 """Small sentiment-model adapter; demo data are synthetic, not Amazon reviews."""
 
 from pathlib import Path
@@ -15,6 +15,7 @@ LABELS = ("negative", "neutral", "positive")
 MODEL_FILES = {
     "Naive Bayes": "naive_bayes.joblib",
     "Logistic Regression": "logistic_regression.joblib",
+    "Feedforward Neural Network": "feedforward_nn.joblib",
 }
 EXAMPLES = {
     "Positive": "Delicious fresh food with great flavor. I love it and will buy again.",

@@ -1,5 +1,5 @@
 # Author: Lindsey Yang
-# Modified: 2026-11-10
+# Modified: 2026-11-23
 """Run with python -m unittest discover -s tests -v."""
 
 import tempfile
@@ -39,14 +39,14 @@ class PrototypeTests(unittest.TestCase):
 
     def test_team_artifact_handoff_and_bad_artifacts(self):
         with tempfile.TemporaryDirectory(dir=LOCAL_TMP) as directory:
-            for name, filename in MODEL_FILES.items():
-                path = Path(directory) / filename
+            for name, demo_model in self.models.items():
+                path = Path(directory) / MODEL_FILES[name]
                 with self.assertRaisesRegex(ValueError, "Missing team artifact"):
                     load_team_model(name, directory)
                 path.write_bytes(b"not a joblib artifact")
                 with self.assertRaisesRegex(ValueError, "Could not load"):
                     load_team_model(name, directory)
-                joblib.dump(self.models[name], path)
+                joblib.dump(demo_model, path)
                 loaded = load_team_model(name, directory)
                 self.assertEqual(predict_review(loaded, EXAMPLES["Positive"])["label"], "positive")
             joblib.dump({"fake": "model"}, Path(directory) / MODEL_FILES["Naive Bayes"])
@@ -85,15 +85,16 @@ class PrototypeTests(unittest.TestCase):
             app.text_area[0].input(EXAMPLES["Positive"])
             app.button[0].click().run()
             self.assertFalse(app.exception)
-            self.assertEqual(len(app.error), 2)
+            self.assertEqual(app.multiselect[0].options, [])
+            self.assertTrue(any("No trained team models" in item.value for item in app.warning))
             self.assertFalse(app.metric)
 
     def test_app_runs_exported_team_pipelines(self):
         with tempfile.TemporaryDirectory(dir=LOCAL_TMP) as directory:
             models_dir = Path(directory) / "models"
             models_dir.mkdir()
-            for name, filename in MODEL_FILES.items():
-                joblib.dump(self.models[name], models_dir / filename)
+            for name, demo_model in self.models.items():
+                joblib.dump(demo_model, models_dir / MODEL_FILES[name])
             app = self.app_with_team_directory(directory)
             app.radio[0].set_value("Team models").run()
             summary = "Disappointing purchase"
@@ -107,6 +108,29 @@ class PrototypeTests(unittest.TestCase):
             self.assertFalse(app.exception)
             self.assertFalse(app.error)
             self.assertEqual([item.value for item in app.metric], ["Negative", "Negative"])
+
+    def test_neural_network_option_is_limited_to_team_mode_with_an_artifact(self):
+        with tempfile.TemporaryDirectory(dir=LOCAL_TMP) as directory:
+            models_dir = Path(directory) / "models"
+            models_dir.mkdir()
+            app = self.app_with_team_directory(directory)
+            name = "Feedforward Neural Network"
+            app.radio[0].set_value("Team models").run()
+            self.assertNotIn(name, app.multiselect[0].options)
+
+            # Reuse a fitted Pipeline to exercise file discovery and model routing.
+            joblib.dump(self.models["Naive Bayes"], models_dir / MODEL_FILES[name])
+            app.run()
+            self.assertEqual(app.multiselect[0].options, [name])
+            app.multiselect[0].set_value([name])
+            app.text_area(key="review").input(EXAMPLES["Positive"])
+            app.button[0].click().run()
+            self.assertFalse(app.error)
+            self.assertEqual([item.value for item in app.metric], ["Positive"])
+
+            app.radio[0].set_value("Demo").run()
+            self.assertNotIn(name, app.multiselect[0].options)
+            self.assertTrue(any("DEMO ONLY" in item.value for item in app.warning))
 
     def app_with_team_directory(self, directory):
         source = (ROOT / "app.py").read_text()

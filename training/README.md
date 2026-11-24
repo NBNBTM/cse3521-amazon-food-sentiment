@@ -2,17 +2,17 @@
 
 Author: Ziwei Li · Group Theta · Seed 49
 
-Reproduces every number in the M3 model comparison from the seed-49 sample. Run from the repository root after placing the sample described in [data/README.md](../data/README.md) at `data/Reviews.csv` (or edit the path in the commands).
+Run from the repository root after downloading the original dataset described in [data/README.md](../data/README.md) and placing the full `Reviews.csv` at `data/Reviews.csv`. The scripts draw the seed-49 sample.
 
 ## Environment
 
-Pinned in `requirements-lock.txt` (pandas 3.1.0, numpy 2.5.4, scikit-learn 1.9.1). Use that file for an identical environment:
+Use the pinned environment in `requirements-lock.txt`, which includes pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1, and matplotlib 3.11.2:
 
 ```sh
 python -m pip install -r requirements-lock.txt
 ```
 
-Note: the numbers in the M3 report come from a sandbox run with pandas 3.0.5 and numpy 2.5.3. Small differences (about 0.1 points) occur across pandas versions, so rerun the commands locally to confirm before citing them.
+Use the comparison table and `results_final.json` from the same run when checking report metrics. The JSON records the training environment, and elapsed training time varies by machine.
 
 ## Commands
 
@@ -37,8 +37,8 @@ Outputs:
 - Input text: `Summary + " " + Text`. `Score` is used only to build the label.
 - Split: stratified 80/20 (`random_state=49`) → training 37,112 / test 9,279. Tuning uses a stratified 80/20 split of the training set → fit 29,689 / validation 7,423.
 - The test split is used once, after all choices are fixed.
-- Chosen settings: LR `C=2` (balanced class weights); GMM with full covariance on 100 SVD components, 1 component per class; NN with one hidden layer of 64 ReLU units, Adam (lr 1e-3), L2 alpha 1e-4, batch size 256, balanced sample weights, trained for 4 epochs (the epoch with the lowest validation loss).
-- The NN's 4-epoch count was tuned on the fit/validation split; the final model is retrained on the full training split for the same 4 epochs.
+- The validation run selects LR's regularization strength, the GMM's component count, and the NN epoch with the lowest validation loss. The NN uses one hidden layer of 64 ReLU units, Adam (lr 1e-3), L2 alpha 1e-4, batch size 256, and balanced sample weights.
+- The final run reads the selected settings from `output/results_partial.json` and fits all models on the full training split, including retraining the NN for the selected epoch count.
 
 ## Known limits
 

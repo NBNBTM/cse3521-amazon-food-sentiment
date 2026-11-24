@@ -6,9 +6,9 @@ A team project that classifies food review text as **negative** (1–2 stars), *
 
 ## Current status
 
-The initial app is deployed on **Streamlit Community Cloud**: [Open the live prototype](https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/).
+The app is deployed on **Streamlit Community Cloud**. [Open the live app](https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/).
 
-**Demo** mode trains Bag-of-Words + Multinomial Naive Bayes and TF-IDF + Logistic Regression on 18 invented food reviews for interface demonstrations. Select **Team models** and **Naive Bayes** to use the fitted pipeline trained on Amazon reviews.
+**Demo** mode fits two classifiers to 18 invented reviews and displays **DEMO ONLY**. **Team models** compares fitted Naive Bayes and Logistic Regression pipelines trained on Amazon Fine Food Reviews. A feedforward neural network becomes available when its fitted pipeline is present.
 
 The repository is **public**, as required by the project specification (pp. 1, 4, 8), and is owned and administered by **NBNBTM**. Anyone can view the code; direct write access remains limited to the owner and accepted collaborators. No teammates have been invited yet.
 
@@ -38,7 +38,7 @@ The current Mac already has `.venv` installed. Double-click `run_app.command`, o
 .venv/bin/python -m streamlit run app.py --server.address 127.0.0.1
 ```
 
-Open the local address printed by Streamlit. Choose an example or enter the review text and an optional summary, select models, and click **Analyze review**. The app makes no external API requests and has no review-upload or persistence feature. Model probabilities are uncalibrated.
+Open the local address printed by Streamlit and select **Team models**. Enter the review text and an optional summary, or choose an example. Select the models to compare and click **Analyze review**. The results show each model's predicted sentiment and uncalibrated class probabilities side by side.
 
 ## Model handoff
 
@@ -46,21 +46,22 @@ See [models/README.md](models/README.md). The feature/model owner should export 
 
 - `models/naive_bayes.joblib`
 - `models/logistic_regression.joblib`
+- `models/feedforward_nn.joblib`
 
-The app sends `Summary + " " + Text` to the fitted pipeline. An omitted summary becomes an empty string. Use this format for training and exclude `Score` from the input. Team mode reports missing or incompatible files. Load team artifacts from trusted sources because joblib can execute Python code.
-
-The deep model will need a separate adapter after the team supplies it. This prototype does not complete the required deep/modern model, full model comparison, or M3 report.
+The app sends `Summary + " " + Text` to the fitted pipeline. An omitted summary becomes an empty string. Use this format for training and exclude `Score` from the input. Team mode lists the exported files available to the app and reports loading or prediction errors. Load team artifacts from trusted sources because joblib can execute Python code.
 
 ## Data and reproducibility
 
-Group Theta uses the instructor-assigned **seed 49** to draw 50,000 reviews from the full Amazon Fine Food Reviews dataset. Generate `data/group_sample_seed49.csv` using the steps in [data/README.md](data/README.md), then share that file within the team for all project stages. The charter reports 46,391 reviews after removing duplicate texts and a sample positive-class proportion of 78.1%. Recalculate held-out evaluation metrics from the agreed split.
+Download the full Amazon Fine Food Reviews dataset using [data/README.md](data/README.md) and put the original `Reviews.csv` in `data/`. The training scripts draw the 50,000-review **seed-49** sample, remove duplicate texts, and use the same stratified split across models.
 
-The [data and EDA notebook](notebooks/01_data_and_eda.ipynb) and [feature and baseline notebook](notebooks/02_features_and_nb_baseline.ipynb) use `data/Reviews.csv` to reproduce the initial analysis and Naive Bayes model. The baseline notebook removes duplicates before the stratified 80/20 split and fits features on the training data only. Reserve the test set for final evaluation. Demo pipelines are fitted in memory by `get_demo_models()`.
+Run the validation and final evaluation scripts from the repository root. See [the training guide](training/README.md) for the script protocol and output files.
 
 `requirements.txt` pins the direct runtime dependencies. `requirements-lock.txt` captures the complete tested Python environment. Use the lock file for an identical dependency set:
 
 ```sh
 python -m pip install -r requirements-lock.txt
+python training/run_tuning.py data/Reviews.csv
+python training/run_final.py data/Reviews.csv models
 python -m unittest discover -s tests -v
 ```
 
@@ -69,16 +70,14 @@ python -m unittest discover -s tests -v
 - `Week 6.2/lecture06.pdf`, PDF pp. 4–10: Bag-of-Words, fixed vocabulary, n-grams, TF-IDF.
 - `Week 9/lecture09.pdf`, PDF pp. 12–16: Naive Bayes and text/sentiment classification.
 - `group_project.pdf`, p. 2: at least two feature representations, two classical models, one deep/modern model, evaluation, and a Streamlit app with two trained models.
-- M1 is due Nov 10 at 11:59 pm under the professor's [updated deadline and group-seed announcement](https://osu.instructure.com/courses/208628/discussion_topics/4312999). `group_project.pdf`, pp. 4–5, lists M2 on Nov 15 and M3 on Nov 22 at 11:59 pm.
+- See the [M3 assignment on Carmen](https://osu.instructure.com/courses/208628/assignments/5746369) for its submission deadline.
 - `group_project.pdf`, pp. 6–7: final report/slides due Nov 29 at 11:59 pm; live demo date is **See Carmen**, not verified here.
 - `group_project.pdf`, p. 8: repository organization, reproducibility, and continuing genuine contribution history.
-
-Remaining team work: train and evaluate the other models on the shared split, export compatible artifacts, and complete the required report and screenshots.
 
 ## Deployment
 
 Live prototype: https://hgbwwg2ig7z6vw2xbgxjz9.streamlit.app/
 
-Streamlit Community Cloud uses repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12. Demo mode displays **DEMO ONLY**. Select **Team models** to exercise the exported model.
+Streamlit Community Cloud uses repository `NBNBTM/cse3521-amazon-food-sentiment`, branch `main`, entrypoint `app.py`, and Python 3.12.
 
 References: [Streamlit deployment](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app), [Streamlit AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest), [scikit-learn model persistence](https://scikit-learn.org/stable/model_persistence.html). Course materials above are read-only local references and are not republished in the repository.
